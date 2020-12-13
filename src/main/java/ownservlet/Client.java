@@ -5,10 +5,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * создание клиента со всеми необходимыми утилитами, точка входа в программу в классе Client
- */
-
 class ClientSomthing {
 
     private Socket socket;
@@ -22,13 +18,6 @@ class ClientSomthing {
     private String sendMessage = null;
     private String oldSendMessage = null;
     private boolean isPaused = false;
-
-    /**
-     * для создания необходимо принять адрес и номер порта
-     *
-     * @param addr
-     * @param port
-     */
 
     public ClientSomthing(String addr, int port) {
         this.addr = addr;
@@ -109,12 +98,10 @@ class ClientSomthing {
         sendMessage = x + "," + y + "";
         if (x == oldX && y == oldY) {
             needToSend = false;
-//            System.out.println(needToSend);
         } else {
             oldX = x;
             oldY = y;
             needToSend = true;
-//            System.out.println(needToSend);
         }
     }
 
@@ -133,7 +120,6 @@ class ClientSomthing {
             try {
                 while (true) {
                     str = in.readLine(); // ждем сообщения с сервера
-//                    System.out.println(str);// пишем сообщение с сервера на консоль
                     write(str);
                 }
             } catch (IOException e) {
@@ -164,7 +150,6 @@ class ClientSomthing {
                 }
                 try {
                     if (needToSend) {
-//                        System.out.println(sendMessage);
                         out.write(sendMessage + "\n"); // отправляем на сервер
                         out.flush(); // чистим
                     }
@@ -192,7 +177,5 @@ public class Client {
 
     public static void main(String[] args) {
         new ClientSomthing(ipAddr, port);
-//        TronDemo tronDemo = new TronDemo();
-//        tronDemo.main(new String[0]);
     }
 }

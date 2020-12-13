@@ -209,9 +209,8 @@ public class TronDemo extends Application {
         private double oldY2;
 
         protected void movePlayer() throws IOException {
-//            if ("pause".equals(clientSomthing.read())) {
-//                playGame = false;
-//            }
+            String s = clientSomthing.read();
+            System.out.println(s);
             if (playGame) {
                 if (positionPlayer == 1) {
                     if (game.getPlayer(positionPlayer).getDir().equals("l")) {
@@ -244,10 +243,6 @@ public class TronDemo extends Application {
                     coor = clientSomthing.read();
                     if (!coor.equals("null") && !coor.equals("play")) {
                         coordinate = clientSomthing.read().split(",");
-//                    for (String str : coordinate
-//                    ) {
-//                        System.out.println(str + ",");
-//                    }
                         p1x = Double.parseDouble(coordinate[0]);
                         p1y = Double.parseDouble(coordinate[1]);
                     }
@@ -261,22 +256,6 @@ public class TronDemo extends Application {
                 tailP2 = tail(p2x, p2y, p2x, p2y, 2);
                 getChildren().add(tailP2);
 
-//
-//            p1x = coords[0];
-//            p1y = coords[1];
-//            p2x = coords[2];
-//            p2y = coords[3];
-
-                //досмотреть
-//            p1.setCenterX(p1x);
-//            p1.setCenterY(p1y);
-//            p2.setCenterX(p2x);
-//            p2.setCenterY(p2y);
-//            System.out.println("x1:" + p1x);
-//            System.out.println("y1:" + p1y);
-//            System.out.println("x2:" + p2x);
-//            System.out.println("y2:" + p2y);
-
                 //прорисовка хвостов
                 tailP1.setEndX(p1x);
                 tailP1.setEndY(p1y);
@@ -286,9 +265,6 @@ public class TronDemo extends Application {
 
                 Point point1 = new Point(p1x, p1y);
                 Point point2 = new Point(p2x, p2y);
-
-//            System.out.println("x:" + point1.getX() + "   " + point2.getX());
-//            System.out.println("y" + point1.getY() + "   " + point2.getY());
 
                 if (point1.getX() == point2.getX() && point1.getY() == point2.getY()) {
                     tie();
@@ -323,10 +299,12 @@ public class TronDemo extends Application {
                 if (crash2) {
                     crash(2);
                 }
-            } else {
-                if (clientSomthing.read().equals("play")) {
-                    playGame = true;
-                }
+            } else if (s.equals("play")) {
+                playGame = true;
+                isPaused = false;
+            } else if (s.equals("pause")) {
+                playGame = false;
+                isPaused = true;
             }
         }
 
@@ -341,25 +319,26 @@ public class TronDemo extends Application {
                     press.setVisible(false);
                     winnerText.setVisible(false);
 //                }
-            } else if (e.getCode() == KeyCode.SPACE && winReset) {
-//                pause();
-                System.out.println("2");
-                clientSomthing.sendPause();
-//                clientSomthing.pause();
-                winnerText.setVisible(false);
-                press.setVisible(true);
-
-                winReset = false;
-
-                player1wins = 0;
-                player2wins = 0;
-
-                for (int i = 0; i < 3; i++) {
-                    bar1[i].setFill(Color.web("#262626"));
-                    bar2[i].setFill(Color.web("#262626"));
-                }
+//            } else if (e.getCode() == KeyCode.SPACE && winReset) {
+////                pause();
+//                System.out.println("2");
+//                clientSomthing.sendPause();
+////                clientSomthing.pause();
+//                winnerText.setVisible(false);
+//                press.setVisible(true);
+//
+//                winReset = false;
+//
+//                player1wins = 0;
+//                player2wins = 0;
+//
+//                for (int i = 0; i < 3; i++) {
+//                    bar1[i].setFill(Color.web("#262626"));
+//                    bar2[i].setFill(Color.web("#262626"));
+//                }
             } else if (e.getCode() == KeyCode.SPACE && !isPaused) {
 //                pause();
+                isPaused = true;
                 System.out.println("3");
                 clientSomthing.sendPause();
             } else if (positionPlayer == 1) {
@@ -453,6 +432,7 @@ public class TronDemo extends Application {
         public void crash(int i) {
             isPaused = true;
             animation.pause();
+            clientSomthing.pause();
             if (i == 1) {
                 winnerText.setText("PLAYER 2 WINS");
                 bar2[player2wins].setFill(Color.HOTPINK);
@@ -494,7 +474,6 @@ public class TronDemo extends Application {
         }
 
         public void reset() {
-            playGame = false;
             getChildren().clear();
             game.getPlayer(1).setDir("r");
             game.getPlayer(2).setDir("l");
@@ -503,6 +482,12 @@ public class TronDemo extends Application {
             p1y = 260;
             p2x = 400;
             p2y = 260;
+
+            if (positionPlayer == 1) {
+                clientSomthing.send(p2x, p2y);
+            } else {
+                clientSomthing.send(p1x, p1y);
+            }
 
             tailP1 = new Line(p1x, p1y, p1x, p1y);
             tailP2 = new Line(p2x, p2y, p2x, p2y);

@@ -3,15 +3,6 @@ package ownservlet;
 import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
-
-/**
- * проект реализует консольный многопользовательский чат.
- * вход в программу запуска сервера - в классе Server.
- *
- * @author izotopraspadov, the tech
- * @version 2.0
- */
-
 class ServerSomthing extends Thread {
 
     private Socket socket; // сокет, через который сервер общается с клиентом,
@@ -27,10 +18,6 @@ class ServerSomthing extends Thread {
 
     public void printStory(BufferedWriter writer, int size) {
         try {
-//                writer.write("History messages" + "\n");
-//                for (String vr : story) {
-//                    writer.write(vr + "\n");
-//                }
             writer.write(size + 1 + "\n");
             writer.flush();
         } catch (IOException ignored) {
@@ -51,14 +38,6 @@ class ServerSomthing extends Thread {
     public void run() {
         String word;
         try {
-            // первое сообщение отправленное сюда - это никнейм
-//            word = in.readLine();
-//            try {
-//                out.write(word + "\n");
-//                out.flush(); // flush() нужен для выталкивания оставшихся данных
-//                // если такие есть, и очистки потока для дьнейших нужд
-//            } catch (IOException ignored) {
-//            }
             try {
                 while (true) {
                     word = in.readLine();
@@ -118,52 +97,6 @@ class ServerSomthing extends Thread {
         }
     }
 }
-
-/**
- * класс хранящий в ссылочном приватном
- * списке информацию о последних 10 (или меньше) сообщениях
- */
-
-//class Story {
-//
-//    private LinkedList<String> story = new LinkedList<>();
-//
-//    /**
-//     * добавить новый элемент в список
-//     *
-//     * @param el
-//     */
-//
-//    public void addStoryEl(String el) {
-//        // если сообщений больше 10, удаляем первое и добавляем новое
-//        // иначе просто добавить
-//        if (story.size() >= 10) {
-//            story.removeFirst();
-//            story.add(el);
-//        } else {
-//            story.add(el);
-//        }
-//    }
-//
-//    /**
-//     * отсылаем последовательно каждое сообщение из списка
-//     * в поток вывода данному клиенту (новому подключению)
-//     *
-//     * @param writer
-//     */
-//
-//    public void printStory(BufferedWriter writer, int size) {
-//        try {
-////                writer.write("History messages" + "\n");
-////                for (String vr : story) {
-////                    writer.write(vr + "\n");
-////                }
-//            writer.write(size + 1 + "\n");
-//            writer.flush();
-//        } catch (IOException ignored) {
-//        }
-//    }
-//}
 
 public class Server {
 
