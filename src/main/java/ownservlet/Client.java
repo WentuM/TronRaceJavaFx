@@ -16,7 +16,10 @@ class ClientSomthing {
     private String nickname; // имя клиента
     private String str;
     private String sendMessage = null;
-    private String oldSendMessage = null;
+    private String sendMessage2 = null;
+    private String sendMessage3 = null;
+    private int oldSendMessage2 = 0;
+    private int oldSendMessage = 0;
     private boolean isPaused = false;
 
     public ClientSomthing(String addr, int port) {
@@ -78,6 +81,8 @@ class ClientSomthing {
     private boolean needToSend = true;
     private double oldX = -1.0;
     private double oldY = -1.0;
+    private boolean oldSend = false;
+    private boolean oldSend2 = false;
 
     public synchronized void pausePoint() throws InterruptedException {
         while (needToPause) {
@@ -105,12 +110,28 @@ class ClientSomthing {
         }
     }
 
-    public synchronized void sendPlay() {
+    public synchronized void sendPlay(int i) {
         sendMessage = "play";
+        oldSend2 = true;
+        needToSend = true;
+//        if (i != oldSendMessage2) {
+//            oldSendMessage2 = i;
+//            oldSend2 = true;
+//        } else {
+//            oldSend2 = false;
+//        }
     }
 
-    public synchronized void sendPause() {
+    public synchronized void sendPause(int i) {
         sendMessage = "pause";
+        oldSend = true;
+        needToSend = true;
+//        if (i != oldSendMessage) {
+//            oldSendMessage = i;
+//            oldSend = true;
+//        } else {
+//            oldSend = false;
+//        }
     }
 
     // нить чтения сообщений с сервера
@@ -149,11 +170,24 @@ class ClientSomthing {
                     e.printStackTrace();
                 }
                 try {
+
+//                    if (oldSend2) {
+//                        out.write(sendMessage3 + "\n"); // отправляем на сервер
+//                        out.flush(); // чистим
+//                        oldSend2 = false;
+//                        continue;
+//                    }
+//                    if (oldSend) {
+//                        out.write(sendMessage2 + "\n"); // отправляем на сервер
+//                        out.flush(); // чистим
+//                        oldSend = false;
+//                        continue;
+//                    }
                     if (needToSend) {
                         out.write(sendMessage + "\n"); // отправляем на сервер
                         out.flush(); // чистим
+                        needToSend = false;
                     }
-                    needToSend = false;
                 } catch (IOException e) {
                     ClientSomthing.this.downService(); // в случае исключения тоже харакири
 

@@ -210,7 +210,12 @@ public class TronDemo extends Application {
 
         protected void movePlayer() throws IOException {
             String s = clientSomthing.read();
-            System.out.println(s);
+//            System.out.println(s);
+            if (s.equals("pause")) {
+                isPaused = true;
+                playGame = false;
+            }
+//            System.out.println(s);
             if (playGame) {
                 if (positionPlayer == 1) {
                     if (game.getPlayer(positionPlayer).getDir().equals("l")) {
@@ -302,9 +307,6 @@ public class TronDemo extends Application {
             } else if (s.equals("play")) {
                 playGame = true;
                 isPaused = false;
-            } else if (s.equals("pause")) {
-                playGame = false;
-                isPaused = true;
             }
         }
 
@@ -312,12 +314,13 @@ public class TronDemo extends Application {
             if (e.getCode() == KeyCode.SPACE && isPaused && !winReset) {
                 System.out.println("1");
                 clientSomthing.unpause();
-                clientSomthing.sendPlay();
+                clientSomthing.sendPlay(1);
 //                System.out.println(clientSomthing.read());
 //                if (clientSomthing.read().equals("play")) {
-                    play();
-                    press.setVisible(false);
-                    winnerText.setVisible(false);
+                play();
+                isPaused = false;
+                press.setVisible(false);
+                winnerText.setVisible(false);
 //                }
 //            } else if (e.getCode() == KeyCode.SPACE && winReset) {
 ////                pause();
@@ -339,8 +342,10 @@ public class TronDemo extends Application {
             } else if (e.getCode() == KeyCode.SPACE && !isPaused) {
 //                pause();
                 isPaused = true;
+                playGame = false;
                 System.out.println("3");
-                clientSomthing.sendPause();
+                clientSomthing.sendPause(1);
+                pause();
             } else if (positionPlayer == 1) {
                 if (e.getCode() == KeyCode.W && !game.getPlayer(positionPlayer).getDir().equals("d")) {
 //                    System.out.println("w1");
@@ -431,8 +436,9 @@ public class TronDemo extends Application {
         //Tests for crashing
         public void crash(int i) {
             isPaused = true;
-            animation.pause();
             clientSomthing.pause();
+            pause();
+            playGame = false;
             if (i == 1) {
                 winnerText.setText("PLAYER 2 WINS");
                 bar2[player2wins].setFill(Color.HOTPINK);

@@ -41,7 +41,7 @@ class ServerSomthing extends Thread {
             try {
                 while (true) {
                     word = in.readLine();
-
+                    System.out.println(word);
                     if (word.equals("pause")) {
                         for (ServerSomthing vr : Server.serverList) {
                             vr.send(word); // отослать принятое сообщение с привязанного клиента всем остальным влючая его
