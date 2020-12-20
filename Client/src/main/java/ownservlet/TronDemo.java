@@ -263,10 +263,10 @@ public class TronDemo extends Application {
                 getChildren().add(tailP2);
 
                 //прорисовка хвостов
-                tailP1.setEndX(p1x);
-                tailP1.setEndY(p1y);
-                tailP2.setEndX(p2x);
-                tailP2.setEndY(p2y);
+//                tailP1.setEndX(p1x);
+//                tailP1.setEndY(p1y);
+//                tailP2.setEndX(p2x);
+//                tailP2.setEndY(p2y);
 
 
                 Point point1 = new Point(p1x, p1y);

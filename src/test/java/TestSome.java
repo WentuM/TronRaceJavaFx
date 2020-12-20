@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Test;
 import ownservlet.Point;
-import ownservlet.Server;
 import ownservlet.TronDemo;
 
 import java.io.IOException;
